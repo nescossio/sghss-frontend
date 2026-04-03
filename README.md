@@ -1,7 +1,3 @@
-Aqui está o **README.md completo e unificado** para você copiar e colar:
-
----
-
 ```markdown
 # 🏥 VidaPlus - Sistema de Gestão Hospitalar e Serviços de Saúde (SGHSS)
 
@@ -78,7 +74,7 @@ sghss-frontend/
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/SEU-USUARIO/sghss-frontend.git
+   git clone https://github.com/nescossio/sghss-frontend.git
    ```
 
 2. **Acesse a pasta do projeto:**
@@ -98,9 +94,7 @@ sghss-frontend/
 
 O sistema está publicado e pode ser acessado através do link:
 
-🔗 **[https://SEU-USUARIO.github.io/sghss-frontend/](https://SEU-USUARIO.github.io/sghss-frontend/)**
-
-*Substitua `SEU-USUARIO` pelo seu nome de usuário do GitHub.*
+🔗 **[https://nescossio.github.io/sghss-frontend/](https://nescossio.github.io/sghss-frontend/)**
 
 ---
 
@@ -152,19 +146,6 @@ O sistema foi desenvolvido com abordagem **mobile-first**, adaptando-se a difere
 | 9 | Telemedicina | `telemedicina.html` | Simulação de videochamada |
 | 10 | Relatórios | `relatorios.html` | Gráficos e indicadores |
 | 11 | Perfil | `perfil.html` | Edição de dados do usuário |
-
----
-
-## 🧪 Testes Realizados
-
-| Tipo de Teste | Total de Casos | Aprovados |
-|---------------|----------------|-----------|
-| Testes Funcionais | 17 | 17 ✅ |
-| Testes de Usabilidade | 6 | 6 ✅ |
-| Testes de Segurança (Front-end) | 4 | 4 ✅ |
-| **TOTAL** | **27** | **27** |
-
----
 
 ## 📄 Documentação do Projeto
 
