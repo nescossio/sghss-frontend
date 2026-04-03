@@ -223,7 +223,7 @@ Este projeto foi desenvolvido para fins acadêmicos, como parte do curso de Aná
 
 **Aluno:** Nathalia Escossio Cavalcante
 **RU:** 4888825
-**GitHub:** [https://github.com/SEU-USUARIO](https://github.com/SEU-USUARIO)
+**GitHub:** https://github.com/nescossio/sghss-frontend.git
 
 ---
 
