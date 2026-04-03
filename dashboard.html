@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidaPlus - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F7FA;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 0 24px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo h2 {
+            color: #1A5F7A;
+            font-size: 1.3rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 260px;
+            height: calc(100% - 70px);
+            background: white;
+            box-shadow: 1px 0 3px rgba(0,0,0,0.05);
+            overflow-y: auto;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #4a5568;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .menu-item i {
+            width: 20px;
+            font-size: 1.1rem;
+        }
+
+        .menu-item:hover {
+            background: #F0F7FA;
+            color: #1A5F7A;
+        }
+
+        .menu-item.active {
+            background: #1A5F7A;
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            margin-top: 70px;
+            padding: 24px;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-header i {
+            font-size: 2rem;
+            color: #1A5F7A;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .card-label {
+            color: #718096;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            color: #718096;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-scheduled {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .status-completed {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            th, td {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <h2><i class="fas fa-heartbeat"></i> VidaPlus SGHSS</h2>
+        </div>
+        <div class="user-info">
+            <span class="user-name" id="userName">Carregando...</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item active">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="pacientes.html" class="menu-item">
+                <i class="fas fa-users"></i> Pacientes
+            </a>
+            <a href="paciente-cadastro.html" class="menu-item">
+                <i class="fas fa-user-plus"></i> Novo Paciente
+            </a>
+            <a href="agendamentos.html" class="menu-item">
+                <i class="fas fa-calendar-alt"></i> Agendamentos
+            </a>
+            <a href="profissionais.html" class="menu-item">
+                <i class="fas fa-user-md"></i> Profissionais
+            </a>
+            <a href="leitos.html" class="menu-item">
+                <i class="fas fa-bed"></i> Gestão de Leitos
+            </a>
+            <a href="telemedicina.html" class="menu-item">
+                <i class="fas fa-video"></i> Telemedicina
+            </a>
+            <a href="relatorios.html" class="menu-item">
+                <i class="fas fa-chart-bar"></i> Relatórios
+            </a>
+            <a href="perfil.html" class="menu-item">
+                <i class="fas fa-user-circle"></i> Perfil
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-label">Pacientes Atendidos (Mês)</span>
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="card-value" id="totalPacientes">0</div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-label">Consultas Hoje</span>
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="card-value" id="consultasHoje">0</div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-label">Leitos Ocupados</span>
+                    <i class="fas fa-bed"></i>
+                </div>
+                <div class="card-value" id="leitosOcupados">0</div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-label">Teleconsultas (Mês)</span>
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="card-value" id="teleconsultas">0</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📅 Próximas Consultas (Hoje)</div>
+            <table id="consultasTable">
+                <thead>
+                    <tr><th>Paciente</th><th>Médico</th><th>Horário</th><th>Status</th></tr>
+                </thead>
+                <tbody id="consultasTableBody">
+                    <tr><td colspan="4">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🏥 Leitos - Ocupação Atual</div>
+            <table id="leitosTable">
+                <thead><tr><th>Unidade</th><th>Leitos Totais</th><th>Ocupados</th><th>Disponíveis</th></tr></thead>
+                <tbody id="leitosTableBody"><tr><td colspan="4">Carregando...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/mock-data.js"></script>
+    <script>
+        // Verificar login
+        if (!sessionStorage.getItem('userLoggedIn')) {
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('userName').textContent = sessionStorage.getItem('userName') || 'Usuário';
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // Carregar dados do mock-data
+        function loadDashboardData() {
+            if (typeof pacientes !== 'undefined') {
+                document.getElementById('totalPacientes').textContent = pacientes.length;
+            }
+            
+            if (typeof agendamentos !== 'undefined') {
+                const hoje = new Date().toISOString().split('T')[0];
+                const consultasHoje = agendamentos.filter(a => a.data === hoje);
+                document.getElementById('consultasHoje').textContent = consultasHoje.length;
+                
+                const tbody = document.getElementById('consultasTableBody');
+                tbody.innerHTML = '';
+                consultasHoje.slice(0, 5).forEach(consulta => {
+                    const paciente = pacientes?.find(p => p.id === consulta.pacienteId);
+                    const profissional = profissionais?.find(p => p.id === consulta.profissionalId);
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${paciente?.nome || 'N/A'}</td>
+                            <td>${profissional?.nome || 'N/A'}</td>
+                            <td>${consulta.horario}</td>
+                            <td><span class="status-badge status-scheduled">Agendada</span></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            if (typeof leitos !== 'undefined') {
+                const totalOcupados = leitos.filter(l => l.status === 'ocupado').length;
+                document.getElementById('leitosOcupados').textContent = totalOcupados;
+                
+                const tbody = document.getElementById('leitosTableBody');
+                tbody.innerHTML = '';
+                const unidades = [...new Map(leitos.map(l => [l.unidade, l])).values()];
+                unidades.forEach(unidade => {
+                    const leitosUnidade = leitos.filter(l => l.unidade === unidade.unidade);
+                    const ocupados = leitosUnidade.filter(l => l.status === 'ocupado').length;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${unidade.unidade}</td>
+                            <td>${leitosUnidade.length}</td>
+                            <td>${ocupados}</td>
+                            <td>${leitosUnidade.length - ocupados}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            if (typeof agendamentos !== 'undefined') {
+                const teleconsultas = agendamentos.filter(a => a.tipo === 'teleconsulta').length;
+                document.getElementById('teleconsultas').textContent = teleconsultas;
+            }
+        }
+
+        // Aguardar mock-data carregar
+        setTimeout(loadDashboardData, 100);
+    </script>
+</body>
+</html>

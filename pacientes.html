@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidaPlus - Pacientes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F7FA;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 0 24px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo h2 {
+            color: #1A5F7A;
+            font-size: 1.3rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 260px;
+            height: calc(100% - 70px);
+            background: white;
+            box-shadow: 1px 0 3px rgba(0,0,0,0.05);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #4a5568;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .menu-item i {
+            width: 20px;
+        }
+
+        .menu-item:hover {
+            background: #F0F7FA;
+            color: #1A5F7A;
+        }
+
+        .menu-item.active {
+            background: #1A5F7A;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            margin-top: 70px;
+            padding: 24px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            color: #2d3748;
+            font-size: 1.8rem;
+        }
+
+        .btn-primary {
+            background: #1A5F7A;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-bar {
+            margin-bottom: 24px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            overflow-x: auto;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #F8FAFC;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        tr:hover {
+            background: #F8FAFC;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-view, .btn-edit {
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .btn-view {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .btn-edit {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            th, td {
+                font-size: 0.75rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <h2><i class="fas fa-heartbeat"></i> VidaPlus SGHSS</h2>
+        </div>
+        <div class="user-info">
+            <span class="user-name" id="userName">Carregando...</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="pacientes.html" class="menu-item active"><i class="fas fa-users"></i> Pacientes</a>
+            <a href="paciente-cadastro.html" class="menu-item"><i class="fas fa-user-plus"></i> Novo Paciente</a>
+            <a href="agendamentos.html" class="menu-item"><i class="fas fa-calendar-alt"></i> Agendamentos</a>
+            <a href="profissionais.html" class="menu-item"><i class="fas fa-user-md"></i> Profissionais</a>
+            <a href="leitos.html" class="menu-item"><i class="fas fa-bed"></i> Gestão de Leitos</a>
+            <a href="telemedicina.html" class="menu-item"><i class="fas fa-video"></i> Telemedicina</a>
+            <a href="relatorios.html" class="menu-item"><i class="fas fa-chart-bar"></i> Relatórios</a>
+            <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> Perfil</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-users"></i> Pacientes</h1>
+            <a href="paciente-cadastro.html" class="btn-primary"><i class="fas fa-plus"></i> Novo Paciente</a>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar por nome, CPF ou telefone...">
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Data Nasc.</th>
+                        <th>Telefone</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="pacientesTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/mock-data.js"></script>
+    <script>
+        if (!sessionStorage.getItem('userLoggedIn')) {
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('userName').textContent = sessionStorage.getItem('userName') || 'Usuário';
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        function renderPacientes(pacientesList) {
+            const tbody = document.getElementById('pacientesTableBody');
+            tbody.innerHTML = '';
+            
+            pacientesList.forEach(paciente => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${paciente.id}</td>
+                        <td>${paciente.nome}</td>
+                        <td>${paciente.cpf}</td>
+                        <td>${formatarData(paciente.dataNasc)}</td>
+                        <td>${paciente.telefone}</td>
+                        <td class="action-buttons">
+                            <a href="paciente-prontuario.html?id=${paciente.id}" class="btn-view"><i class="fas fa-eye"></i> Prontuário</a>
+                            <a href="paciente-cadastro.html?id=${paciente.id}" class="btn-edit"><i class="fas fa-edit"></i> Editar</a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function formatarData(data) {
+            if (!data) return '';
+            const [ano, mes, dia] = data.split('-');
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        // Renderizar todos os pacientes
+        setTimeout(() => {
+            if (typeof pacientes !== 'undefined') {
+                renderPacientes(pacientes);
+            }
+        }, 100);
+
+        // Busca
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = pacientes.filter(p => 
+                p.nome.toLowerCase().includes(searchTerm) ||
+                p.cpf.includes(searchTerm) ||
+                p.telefone.includes(searchTerm)
+            );
+            renderPacientes(filtered);
+        });
+    </script>
+</body>
+</html>

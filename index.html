@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>VidaPlus - Login | SGHSS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1A5F7A 0%, #0D3B4A 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, #1A5F7A 0%, #0D3B4A 100%);
+            padding: 48px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-left h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .login-left .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .login-left .features {
+            margin-top: 40px;
+            list-style: none;
+        }
+
+        .login-left .features li {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .login-left .features i {
+            width: 24px;
+            font-size: 1.2rem;
+        }
+
+        .login-right {
+            flex: 1;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo h2 {
+            color: #1A5F7A;
+            font-size: 1.8rem;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1A5F7A;
+            box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #1A5F7A;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-login:hover {
+            background: #0D3B4A;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            background: #FEF2F2;
+            color: #E63946;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-message.show {
+            display: flex;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-password a {
+            color: #1A5F7A;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+            }
+            .login-left {
+                display: none;
+            }
+            .login-right {
+                padding: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <h1>🏥 VidaPlus</h1>
+            <p class="tagline">Sistema de Gestão Hospitalar e Serviços de Saúde</p>
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i> Gestão completa de pacientes</li>
+                <li><i class="fas fa-check-circle"></i> Prontuário eletrônico</li>
+                <li><i class="fas fa-check-circle"></i> Telemedicina integrada</li>
+                <li><i class="fas fa-check-circle"></i> Gestão de leitos e agendas</li>
+                <li><i class="fas fa-check-circle"></i> Relatórios e dashboards</li>
+            </ul>
+        </div>
+        <div class="login-right">
+            <div class="logo">
+                <h2><i class="fas fa-heartbeat"></i> VidaPlus</h2>
+                <p>Acesse sua conta</p>
+            </div>
+            
+            <div id="errorMsg" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>E-mail ou senha inválidos. Tente: admin@vidaplus.com / 123456</span>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Senha</label>
+                    <input type="password" id="password" placeholder="••••••" required>
+                </div>
+                <button type="submit" class="btn-login">Entrar no Sistema</button>
+                <div class="forgot-password">
+                    <a href="#">Esqueci minha senha</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Credenciais mockadas para demo
+        const VALID_CREDENTIALS = {
+            email: 'admin@vidaplus.com',
+            password: '123456'
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (email === VALID_CREDENTIALS.email && password === VALID_CREDENTIALS.password) {
+                // Salva sessão simulada
+                sessionStorage.setItem('userLoggedIn', 'true');
+                sessionStorage.setItem('userEmail', email);
+                sessionStorage.setItem('userName', 'Administrador VidaPlus');
+                // Redireciona para dashboard
+                window.location.href = 'dashboard.html';
+            } else {
+                errorMsg.classList.add('show');
+                // Esconde erro após 3 segundos
+                setTimeout(() => {
+                    errorMsg.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

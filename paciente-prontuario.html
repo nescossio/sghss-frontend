@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidaPlus - Prontuário do Paciente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F7FA;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 0 24px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo h2 {
+            color: #1A5F7A;
+            font-size: 1.3rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logout-btn {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 260px;
+            height: calc(100% - 70px);
+            background: white;
+            box-shadow: 1px 0 3px rgba(0,0,0,0.05);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #4a5568;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .menu-item i {
+            width: 20px;
+        }
+
+        .menu-item:hover {
+            background: #F0F7FA;
+            color: #1A5F7A;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            margin-top: 70px;
+            padding: 24px;
+        }
+
+        .patient-header {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .patient-name {
+            font-size: 1.8rem;
+            color: #1A5F7A;
+            margin-bottom: 8px;
+        }
+
+        .patient-info {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            color: #718096;
+            margin-top: 16px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2d3748;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .info-label {
+            width: 150px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .info-value {
+            flex: 1;
+            color: #2d3748;
+        }
+
+        .exame-item {
+            background: #F8FAFC;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .btn-back {
+            background: #718096;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><h2><i class="fas fa-heartbeat"></i> VidaPlus SGHSS</h2></div>
+        <div class="user-info">
+            <span class="user-name" id="userName">Carregando...</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="pacientes.html" class="menu-item active"><i class="fas fa-users"></i> Pacientes</a>
+            <a href="paciente-cadastro.html" class="menu-item"><i class="fas fa-user-plus"></i> Novo Paciente</a>
+            <a href="agendamentos.html" class="menu-item"><i class="fas fa-calendar-alt"></i> Agendamentos</a>
+            <a href="profissionais.html" class="menu-item"><i class="fas fa-user-md"></i> Profissionais</a>
+            <a href="leitos.html" class="menu-item"><i class="fas fa-bed"></i> Gestão de Leitos</a>
+            <a href="telemedicina.html" class="menu-item"><i class="fas fa-video"></i> Telemedicina</a>
+            <a href="relatorios.html" class="menu-item"><i class="fas fa-chart-bar"></i> Relatórios</a>
+            <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> Perfil</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <button class="btn-back" onclick="window.location.href='pacientes.html'">
+            <i class="fas fa-arrow-left"></i> Voltar para lista
+        </button>
+
+        <div class="patient-header" id="patientHeader">
+            <div class="patient-name" id="patientName">Carregando...</div>
+            <div class="patient-info" id="patientInfo"></div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><i class="fas fa-notes-medical"></i> Histórico Clínico</div>
+            <div id="historico">Carregando...</div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><i class="fas fa-allergies"></i> Alergias</div>
+            <div id="alergias">Carregando...</div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><i class="fas fa-flask"></i> Exames Realizados</div>
+            <div id="exames">Carregando...</div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><i class="fas fa-calendar-alt"></i> Consultas Realizadas</div>
+            <div id="consultas">Carregando...</div>
+        </div>
+    </div>
+
+    <script src="js/mock-data.js"></script>
+    <script>
+        if (!sessionStorage.getItem('userLoggedIn')) {
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('userName').textContent = sessionStorage.getItem('userName') || 'Usuário';
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const pacienteId = parseInt(urlParams.get('id'));
+
+        setTimeout(() => {
+            if (typeof pacientes !== 'undefined' && typeof prontuarios !== 'undefined') {
+                const paciente = pacientes.find(p => p.id === pacienteId);
+                
+                if (paciente) {
+                    document.getElementById('patientName').textContent = paciente.nome;
+                    document.getElementById('patientInfo').innerHTML = `
+                        <span><i class="fas fa-id-card"></i> CPF: ${paciente.cpf}</span>
+                        <span><i class="fas fa-calendar"></i> Nascimento: ${formatarData(paciente.dataNasc)}</span>
+                        <span><i class="fas fa-phone"></i> ${paciente.telefone}</span>
+                        <span><i class="fas fa-envelope"></i> ${paciente.email || 'Não informado'}</span>
+                    `;
+                }
+
+                const prontuario = getProntuarioByPaciente(pacienteId);
+                document.getElementById('historico').innerHTML = `<p>${prontuario.historico}</p>`;
+                document.getElementById('alergias').innerHTML = `<p>${prontuario.alergias}</p>`;
+                
+                const examesHtml = prontuario.exames.map(exame => `<div class="exame-item"><i class="fas fa-file-alt"></i> ${exame}</div>`).join('');
+                document.getElementById('exames').innerHTML = examesHtml || '<p>Nenhum exame registrado</p>';
+
+                const consultasPaciente = getAgendamentosByPaciente(pacienteId);
+                const consultasHtml = consultasPaciente.map(c => {
+                    const profissional = getProfissionalById(c.profissionalId);
+                    return `<div class="exame-item">
+                        <i class="fas fa-user-md"></i> ${profissional?.nome || 'Profissional'} - ${c.tipo === 'teleconsulta' ? '📹 Teleconsulta' : '🏥 Consulta presencial'}
+                        <br><small>${formatarData(c.data)} às ${c.horario}</small>
+                    </div>`;
+                }).join('');
+                document.getElementById('consultas').innerHTML = consultasHtml || '<p>Nenhuma consulta registrada</p>';
+            }
+        }, 100);
+
+        function formatarData(data) {
+            if (!data) return '';
+            const [ano, mes, dia] = data.split('-');
+            return `${dia}/${mes}/${ano}`;
+        }
+    </script>
+</body>
+</html>

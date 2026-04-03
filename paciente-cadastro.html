@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidaPlus - Cadastro de Paciente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F7FA;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 0 24px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo h2 {
+            color: #1A5F7A;
+            font-size: 1.3rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 260px;
+            height: calc(100% - 70px);
+            background: white;
+            box-shadow: 1px 0 3px rgba(0,0,0,0.05);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #4a5568;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .menu-item i {
+            width: 20px;
+        }
+
+        .menu-item:hover {
+            background: #F0F7FA;
+            color: #1A5F7A;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            margin-top: 70px;
+            padding: 24px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1A5F7A;
+            box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.1);
+        }
+
+        input.error {
+            border-color: #E63946;
+        }
+
+        .error-message {
+            color: #E63946;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn-submit {
+            background: #1A5F7A;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background: #0D3B4A;
+        }
+
+        .success-message {
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><h2><i class="fas fa-heartbeat"></i> VidaPlus SGHSS</h2></div>
+        <div class="user-info">
+            <span class="user-name" id="userName">Carregando...</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="pacientes.html" class="menu-item"><i class="fas fa-users"></i> Pacientes</a>
+            <a href="paciente-cadastro.html" class="menu-item active"><i class="fas fa-user-plus"></i> Novo Paciente</a>
+            <a href="agendamentos.html" class="menu-item"><i class="fas fa-calendar-alt"></i> Agendamentos</a>
+            <a href="profissionais.html" class="menu-item"><i class="fas fa-user-md"></i> Profissionais</a>
+            <a href="leitos.html" class="menu-item"><i class="fas fa-bed"></i> Gestão de Leitos</a>
+            <a href="telemedicina.html" class="menu-item"><i class="fas fa-video"></i> Telemedicina</a>
+            <a href="relatorios.html" class="menu-item"><i class="fas fa-chart-bar"></i> Relatórios</a>
+            <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> Perfil</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="form-container">
+            <h1 class="form-title"><i class="fas fa-user-plus"></i> Cadastro de Paciente</h1>
+            
+            <div id="successMsg" class="success-message">
+                <i class="fas fa-check-circle"></i> Paciente cadastrado com sucesso!
+            </div>
+
+            <form id="pacienteForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome completo *</label>
+                        <input type="text" id="nome" required>
+                        <div class="error-message" id="error-nome">Nome é obrigatório</div>
+                    </div>
+                    <div class="form-group">
+                        <label>CPF *</label>
+                        <input type="text" id="cpf" placeholder="000.000.000-00" required>
+                        <div class="error-message" id="error-cpf">CPF inválido</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data de Nascimento *</label>
+                        <input type="date" id="dataNasc" required>
+                        <div class="error-message" id="error-data">Data de nascimento é obrigatória</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone *</label>
+                        <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+                        <div class="error-message" id="error-telefone">Telefone é obrigatório</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="email" placeholder="paciente@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Endereço completo</label>
+                    <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade">
+                </div>
+
+                <button type="submit" class="btn-submit">Cadastrar Paciente</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/mock-data.js"></script>
+    <script>
+        if (!sessionStorage.getItem('userLoggedIn')) {
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('userName').textContent = sessionStorage.getItem('userName') || 'Usuário';
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/[^\d]/g, '');
+            if (cpf.length !== 11) return false;
+            return true; // Validação simplificada
+        }
+
+        function mostrarErro(campoId, errorId, show) {
+            document.getElementById(campoId).classList.toggle('error', show);
+            document.getElementById(errorId).classList.toggle('show', show);
+        }
+
+        document.getElementById('pacienteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let isValid = true;
+            const nome = document.getElementById('nome').value;
+            const cpf = document.getElementById('cpf').value;
+            const dataNasc = document.getElementById('dataNasc').value;
+            const telefone = document.getElementById('telefone').value;
+
+            if (!nome) {
+                mostrarErro('nome', 'error-nome', true);
+                isValid = false;
+            } else {
+                mostrarErro('nome', 'error-nome', false);
+            }
+
+            if (!validarCPF(cpf)) {
+                mostrarErro('cpf', 'error-cpf', true);
+                isValid = false;
+            } else {
+                mostrarErro('cpf', 'error-cpf', false);
+            }
+
+            if (!dataNasc) {
+                mostrarErro('dataNasc', 'error-data', true);
+                isValid = false;
+            } else {
+                mostrarErro('dataNasc', 'error-data', false);
+            }
+
+            if (!telefone) {
+                mostrarErro('telefone', 'error-telefone', true);
+                isValid = false;
+            } else {
+                mostrarErro('telefone', 'error-telefone', false);
+            }
+
+            if (isValid) {
+                const successMsg = document.getElementById('successMsg');
+                successMsg.style.display = 'block';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+                this.reset();
+            }
+        });
+
+        document.getElementById('cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                if (value.length === 11) {
+                    value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                } else if (value.length === 10) {
+                    value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                }
+                e.target.value = value;
+            }
+        });
+    </script>
+</body>
+</html>

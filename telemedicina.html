@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidaPlus - Telemedicina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F7FA;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 0 24px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo h2 {
+            color: #1A5F7A;
+            font-size: 1.3rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logout-btn {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 260px;
+            height: calc(100% - 70px);
+            background: white;
+            box-shadow: 1px 0 3px rgba(0,0,0,0.05);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #4a5568;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .menu-item i {
+            width: 20px;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: #1A5F7A;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            margin-top: 70px;
+            padding: 24px;
+        }
+
+        .telemed-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .consultas-panel, .video-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .consulta-item {
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .consulta-item:hover {
+            background: #F0F7FA;
+            border-color: #1A5F7A;
+        }
+
+        .consulta-paciente {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .consulta-horario {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .video-placeholder {
+            background: #1a1a2e;
+            border-radius: 12px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .btn-video {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            width: 100%;
+        }
+
+        .prescricao-area {
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            margin-top: 8px;
+        }
+
+        .btn-prescricao {
+            background: #1A5F7A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .telemed-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><h2><i class="fas fa-heartbeat"></i> VidaPlus SGHSS</h2></div>
+        <div class="user-info">
+            <span class="user-name" id="userName">Carregando...</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="pacientes.html" class="menu-item"><i class="fas fa-users"></i> Pacientes</a>
+            <a href="paciente-cadastro.html" class="menu-item"><i class="fas fa-user-plus"></i> Novo Paciente</a>
+            <a href="agendamentos.html" class="menu-item"><i class="fas fa-calendar-alt"></i> Agendamentos</a>
+            <a href="profissionais.html" class="menu-item"><i class="fas fa-user-md"></i> Profissionais</a>
+            <a href="leitos.html" class="menu-item"><i class="fas fa-bed"></i> Gestão de Leitos</a>
+            <a href="telemedicina.html" class="menu-item active"><i class="fas fa-video"></i> Telemedicina</a>
+            <a href="relatorios.html" class="menu-item"><i class="fas fa-chart-bar"></i> Relatórios</a>
+            <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> Perfil</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="telemed-container">
+            <div class="consultas-panel">
+                <div class="section-title"><i class="fas fa-calendar-alt"></i> Teleconsultas Agendadas</div>
+                <div id="consultasLista"></div>
+            </div>
+            <div class="video-panel">
+                <div class="section-title"><i class="fas fa-video"></i> Sala de Teleconsulta</div>
+                <div class="video-placeholder" id="videoPlaceholder">
+                    <div>
+                        <i class="fas fa-video" style="font-size: 3rem; opacity: 0.5;"></i>
+                        <p style="margin-top: 16px;">Selecione uma consulta para iniciar a videochamada</p>
+                    </div>
+                </div>
+                <button class="btn-video" id="btnIniciar" onclick="iniciarVideo()" disabled>Iniciar Videochamada</button>
+                
+                <div class="prescricao-area">
+                    <label><i class="fas fa-prescription"></i> Prescrição Médica</label>
+                    <textarea rows="4" id="prescricao" placeholder="Digite a prescrição do paciente..."></textarea>
+                    <button class="btn-prescricao" onclick="salvarPrescricao()">Salvar Prescrição</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/mock-data.js"></script>
+    <script>
+        let consultaSelecionada = null;
+
+        if (!sessionStorage.getItem('userLoggedIn')) {
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('userName').textContent = sessionStorage.getItem('userName') || 'Usuário';
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        function formatarData(data) {
+            if (!data) return '';
+            const [ano, mes, dia] = data.split('-');
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        function selecionarConsulta(consulta) {
+            consultaSelecionada = consulta;
+            const paciente = pacientes.find(p => p.id === consulta.pacienteId);
+            const profissional = profissionais.find(p => p.id === consulta.profissionalId);
+            
+            document.getElementById('videoPlaceholder').innerHTML = `
+                <div style="text-align: center;">
+                    <i class="fas fa-user-circle" style="font-size: 3rem;"></i>
+                    <h3 style="margin-top: 16px;">${paciente?.nome}</h3>
+                    <p>Dr(a). ${profissional?.nome}</p>
+                    <p>${formatarData(consulta.data)} às ${consulta.horario}</p>
+                </div>
+            `;
+            document.getElementById('btnIniciar').disabled = false;
+        }
+
+        function iniciarVideo() {
+            if (consultaSelecionada) {
+                const paciente = pacientes.find(p => p.id === consultaSelecionada.pacienteId);
+                document.getElementById('videoPlaceholder').innerHTML = `
+                    <div style="text-align: center;">
+                        <i class="fas fa-circle" style="color: #4CAF50; font-size: 1rem; position: absolute; top: 20px; left: 20px;"></i>
+                        <i class="fas fa-video" style="font-size: 3rem; color: #1A5F7A;"></i>
+                        <p style="margin-top: 16px; font-weight: 600;">Em chamada com ${paciente?.nome}</p>
+                        <p style="font-size: 0.85rem; color: #718096;">Videochamada simulada (modo demonstração)</p>
+                        <button class="btn-prescricao" style="margin-top: 16px;" onclick="encerrarChamada()">Encerrar Chamada</button>
+                    </div>
+                `;
+                document.getElementById('btnIniciar').style.display = 'none';
+                alert(`🎥 Videochamada iniciada com ${paciente?.nome}\n(Simulação - Ambiente de demonstração)`);
+            }
+        }
+
+        function encerrarChamada() {
+            location.reload();
+        }
+
+        function salvarPrescricao() {
+            const prescricao = document.getElementById('prescricao').value;
+            if (prescricao) {
+                alert(`✅ Prescrição salva com sucesso!\n\n${prescricao}`);
+                document.getElementById('prescricao').value = '';
+            } else {
+                alert('Digite a prescrição antes de salvar.');
+            }
+        }
+
+        setTimeout(() => {
+            if (typeof agendamentos !== 'undefined' && typeof pacientes !== 'undefined') {
+                const teleconsultas = agendamentos.filter(a => a.tipo === 'teleconsulta');
+                const listaDiv = document.getElementById('consultasLista');
+                listaDiv.innerHTML = '';
+                
+                teleconsultas.forEach(consulta => {
+                    const paciente = pacientes.find(p => p.id === consulta.pacienteId);
+                    listaDiv.innerHTML += `
+                        <div class="consulta-item" onclick="selecionarConsulta(${JSON.stringify(consulta).replace(/"/g, '&quot;')})">
+                            <div class="consulta-paciente">${paciente?.nome || 'Paciente'}</div>
+                            <div class="consulta-horario">📅 ${formatarData(consulta.data)} às ${consulta.horario}</div>
+                        </div>
+                    `;
+                });
+            }
+        }, 100);
+    </script>
+</body>
+</html>
