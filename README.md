@@ -170,7 +170,7 @@ A documentação completa do projeto (PDF) inclui:
 | **Disciplina** | Projeto Multidisciplinar |
 | **Instituição** | UNINTER - Centro Universitário Internacional |
 | **Ênfase** | Front-end |
-| **Professor** | Prof. Winston Sen Lun Fung, Me. |
+| **Professor** | Prof. Luciane Yanase |
 
 ---
 
