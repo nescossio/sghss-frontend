@@ -1,7 +1,3 @@
-Aqui está o **README.md completo e unificado** para você copiar e colar:
-
----
-
 ```markdown
 # 🏥 VidaPlus - Sistema de Gestão Hospitalar e Serviços de Saúde (SGHSS)
 
